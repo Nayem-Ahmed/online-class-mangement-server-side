@@ -33,6 +33,10 @@ async function run() {
             const result = await techBisyCollection.insertOne(techitem);
             res.send(result)
         })
+        app.get('/tech' ,async(req, res) => {
+            const result = await techBisyCollection.find().toArray()
+            res.send(result)
+          })
 
         // add class
         app.post('/addclass', async (req, res) => {
@@ -52,7 +56,13 @@ async function run() {
             res.send(result)
       
           })
-
+          app.get('/addclass/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const result = await addClassCollection.findOne(filter)
+            res.send(result)
+      
+          })
 
 
         // Send a ping to confirm a successful connection
