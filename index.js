@@ -26,6 +26,7 @@ async function run() {
         await client.connect();
         const techBisyCollection = client.db("BisyDb").collection("techBisy");
         const addClassCollection = client.db("BisyDb").collection("addclass");
+        const usersCollection = client.db("BisyDb").collection("users");
 
         // tech page 
         app.post('/tech', async (req, res) => {
@@ -63,6 +64,27 @@ async function run() {
             res.send(result)
       
           })
+
+        //  users
+        app.post('/users', async (req, res) => {
+            const users = req.body;
+            // email uniqe
+            const query ={email: users.email}
+            const existingUser = await usersCollection.findOne(query);
+            if (existingUser) {
+                return res.send({message : 'user already existing',insertedId: null})
+                
+            }
+            const result = await usersCollection.insertOne(users);
+            res.send(result)
+        })
+
+        app.get('/users' ,async(req, res) => {
+            const result = await usersCollection.find().toArray()
+            res.send(result)
+          })
+
+
 
 
         // Send a ping to confirm a successful connection
