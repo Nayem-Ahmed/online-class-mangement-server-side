@@ -39,6 +39,7 @@ async function run() {
             res.send(result)
           })
 
+
         // add class
         app.post('/addclass', async (req, res) => {
             const addclass = req.body;
@@ -65,6 +66,36 @@ async function run() {
       
           })
 
+          app.patch('/addclass/:id',async(req,res)=>{
+            const updateclass = req.body;
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const updatedDoc = {
+                $set:{
+                    title: updateclass.title ,
+                    name:  updateclass.name  ,
+                    email: updateclass.email  ,
+                    price: updateclass.price  ,
+                    description:updateclass.description  ,
+                    image:updateclass.image
+                }
+                
+            }
+            const result = await addClassCollection.updateOne(filter,updatedDoc);        
+            res.send(result)
+
+
+          })
+
+        //   app.get('/addclass/:email',async(req,res) =>{
+        //     const email= req.params.email;
+        //     const query = {email:email}
+        //     const result = await addClassCollection.findOne(query)
+        //     res.send(result)
+        // })
+
+
+
         //  users
         app.post('/users', async (req, res) => {
             const users = req.body;
@@ -83,6 +114,27 @@ async function run() {
             const result = await usersCollection.find().toArray()
             res.send(result)
           })
+
+        app.get('/users/:email',async(req,res) =>{
+            const email= req.params.email;
+            const query = {email:email}
+            const result = await usersCollection.findOne(query)
+            res.send(result)
+        })
+
+        app.patch('/users/admin/:id', async(req,res)=>{
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const updatedDoc = {
+                $set:{
+                    role : "admin"
+                }
+                
+            }
+            const result = await usersCollection.updateOne(filter,updatedDoc);        
+            res.send(result)
+
+        })
 
 
 
