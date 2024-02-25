@@ -39,6 +39,7 @@ async function run() {
             const result = await techBisyCollection.find().toArray()
             res.send(result)
         })
+        
 
 
         // add class
@@ -134,8 +135,7 @@ async function run() {
             res.send(result)
 
         })
-
-
+ 
         // payment
 
         app.post("/create-payment-intent", async (req, res) => {
